@@ -31,7 +31,7 @@ const user = new Schema (
   }
   );
 
-user.post("save", async function (next) {
+user.pre("save", async function (next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   
