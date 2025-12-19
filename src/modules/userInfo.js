@@ -1,4 +1,5 @@
 import mongoose, {Schema} from "mongoose";
+import bcrypt from "bcrypt";
 
 const user = new Schema (
   {
@@ -15,7 +16,7 @@ const user = new Schema (
     type: String,
     required: true,
     minLength: 6,
-    maxLenght: 50
+    maxLenght: 500
   },
   email: {
     type: String,
@@ -29,6 +30,13 @@ const user = new Schema (
   timestamps: true
   }
   );
+
+user.post("save", async function (next) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  
+  next();
+});
 
 const USER = mongoose.model("USER", user);
 export default USER;
