@@ -31,11 +31,10 @@ const user = new Schema (
   }
   );
 
-user.pre("save", async function (next) {
+user.pre("save", async function (/*next NOTE : MONGOOSE V9 AND ABOVE DO NOT USE NEXT ON THE PRE HOOK ANY MORE!!*/) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
-  
-  next();
+  //next() 
 });
 
 const USER = mongoose.model("USER", user);
